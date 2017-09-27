@@ -53,18 +53,19 @@ classdef MotorHSC
         end
         
         function moveToPosition(hsc_obj,dxl_id,goalPosition)
-            % Rescale position
-            rescaledPos = goalPosition*hsc_obj.MAX_POS;
             % Mirrorize even ids
             if mod(dxl_id,2)==0
-                rescaledPos = 1 - rescaledPos;
+                goalPosition = 1 - goalPosition;
             end
+            % Rescale position
+            rescaledPos = goalPosition*hsc_obj.MAX_POS;
             % Write to motor
             write2ByteTxRx(hsc_obj.port_num, hsc_obj.PROTOCOL_VERSION, dxl_id, hsc_obj.ADDR_AX_GOAL_POSITION, rescaledPos);
         end
         
         function position = readPosition(hsc_obj,dxl_id)
             position = read2ByteTxRx(hsc_obj.port_num, hsc_obj.PROTOCOL_VERSION, dxl_id, hsc_obj.ADDR_AX_PRESENT_POSITION);
+            % Rescale
             position = position/(hsc_obj.MAX_POS-hsc_obj.MIN_POS);
             % Mirrorize even ids
             if mod(dxl_id,2)==0

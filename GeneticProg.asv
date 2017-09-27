@@ -1,0 +1,17 @@
+classdef GeneticProg
+   properties
+       iteratorIndex
+       instructionsList
+   end
+   methods
+       function obj = GeneticProg()
+           obj.iteratorIndex = 1;
+       end
+       
+       function obj_gp = next(obj_gp)
+           % Ite
+           obj_gp.iteratorIndex = obj_gp.iteratorIndex+1;
+       end
+       
+   end
+end

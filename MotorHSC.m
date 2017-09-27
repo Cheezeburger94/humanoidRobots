@@ -17,7 +17,7 @@ classdef MotorHSC
         TORQUE_DISABLE              = 0;
     end
     
-    methods(Static)
+    methods
         function obj = MotorHSC()
             obj.loadLibrary;
             obj.port_num = portHandler(obj.DEVICENAME);
@@ -27,24 +27,6 @@ classdef MotorHSC
             end
             if ~setBaudRate(obj.port_num, obj.BAUDRATE)
                 error('MotorHSC: Failed to set baudrate');
-            end
-        end
-        
-        function loadLibrary()
-            if strcmp(computer, 'PCWIN')
-                lib_name = 'dxl_x86_c';
-            elseif strcmp(computer, 'PCWIN64')
-                lib_name = 'dxl_x64_c';
-            elseif strcmp(computer, 'GLNX86')
-                lib_name = 'libdxl_x86_c';
-            elseif strcmp(computer, 'GLNXA64')
-                lib_name = 'libdxl_x64_c';
-            elseif strcmp(computer, 'MACI64')
-                lib_name = 'libdxl_mac_c';
-            end
-            
-            if ~libisloaded(lib_name)
-                [~, ~] = loadlibrary(lib_name, 'dynamixel_sdk.h', 'addheader', 'port_handler.h', 'addheader', 'packet_handler.h');
             end
         end
         
@@ -83,4 +65,23 @@ classdef MotorHSC
         
     end
     
+    methods(Static)
+        function loadLibrary()
+            if strcmp(computer, 'PCWIN')
+                lib_name = 'dxl_x86_c';
+            elseif strcmp(computer, 'PCWIN64')
+                lib_name = 'dxl_x64_c';
+            elseif strcmp(computer, 'GLNX86')
+                lib_name = 'libdxl_x86_c';
+            elseif strcmp(computer, 'GLNXA64')
+                lib_name = 'libdxl_x64_c';
+            elseif strcmp(computer, 'MACI64')
+                lib_name = 'libdxl_mac_c';
+            end
+            
+            if ~libisloaded(lib_name)
+                [~, ~] = loadlibrary(lib_name, 'dynamixel_sdk.h', 'addheader', 'port_handler.h', 'addheader', 'packet_handler.h');
+            end
+        end
+    end
 end
