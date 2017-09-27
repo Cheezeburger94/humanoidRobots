@@ -1,5 +1,5 @@
 classdef MotorHSC
-    properties
+    properties(SetAccess = private)
         % Port connection
         PROTOCOL_VERSION            = 1.0;
         BAUDRATE                    = 1000000;
@@ -63,6 +63,14 @@ classdef MotorHSC
             write1ByteTxRx(hsc_obj.port_num, hsc_obj.PROTOCOL_VERSION, dxl_id, hsc_obj.ADDR_AX_TORQUE_ENABLE, hsc_obj.TORQUE_DISABLE);
         end
         
+        function standUpRobot(hsc_obj) % Puts robot in standing pose and turns on torque for all motors
+            posArray = [334,687,297,723,410,610,356,666,489,532,396,628,279,743,639,385,491,532];
+            for i=1:length(posArray)
+                goalPos = posArray(i);
+                write1ByteTxRx(hsc_obj.port_num, hsc_obj.PROTOCOL_VERSION, i, hsc_obj.ADDR_AX_TORQUE_ENABLE, hsc_obj.TORQUE_ENABLE);
+                write2ByteTxRx(hsc_obj.port_num, hsc_obj.PROTOCOL_VERSION, i, hsc_obj.ADDR_AX_GOAL_POSITION, goalPos);
+            end
+        end
     end
     
     methods(Static)
@@ -83,5 +91,6 @@ classdef MotorHSC
                 [~, ~] = loadlibrary(lib_name, 'dynamixel_sdk.h', 'addheader', 'port_handler.h', 'addheader', 'packet_handler.h');
             end
         end
+        
     end
 end
