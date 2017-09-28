@@ -33,12 +33,10 @@ classdef GeneticProg
             motorHSC.moveToPosition(id,pos);
         end
         
-        function enableTorqueGP(motorHSC,id)
-            motorHSC.enableTorque(id);
+        function enableTorque(motorHSC,id)
+           motorHSC.enableTorque(id); 
         end
         
-        function disableTorqueGP(motorHSC,id)
-            motorHSC.disableTorque(id);
-        end
+        
     end
 end

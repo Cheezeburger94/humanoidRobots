@@ -71,9 +71,17 @@ classdef MotorHSC
                 write2ByteTxRx(hsc_obj.port_num, hsc_obj.PROTOCOL_VERSION, i, hsc_obj.ADDR_AX_GOAL_POSITION, goalPos);
             end
         end
+        
+        function disableAllTorque(hsc_obj)
+            for i=1:18
+                dxl_id = i;
+                write1ByteTxRx(hsc_obj.port_num, hsc_obj.PROTOCOL_VERSION, dxl_id, hsc_obj.ADDR_AX_TORQUE_ENABLE, hsc_obj.TORQUE_DISABLE);
+            end
+        end
+        
     end
     
-    methods(Static)
+    methods(Static, Access = private)
         function loadLibrary()
             if strcmp(computer, 'PCWIN')
                 lib_name = 'dxl_x86_c';
