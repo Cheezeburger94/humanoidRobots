@@ -4,7 +4,10 @@ clear all;
 
 % Initializations
 hsc_motor = MotorHSC()
+hsc_motor.moveToPosition(1,0/1023)
+hsc_motor.moveToPosition(2,(0)/1023)
 
+%%
 % Finite State Machine
 state = 1;
 while ~state==0
@@ -18,7 +21,7 @@ while ~state==0
 end
 
 
-% Quit program
+%% Quit program
 hsc_motor.disableAllTorque();
 pause(1);
 hsc_motor.closeConnection();
