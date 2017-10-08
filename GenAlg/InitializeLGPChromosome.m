@@ -9,9 +9,9 @@ numberOfInstructions = fix(range*rand) + minNumberOfInstructions;
 chromosome = [];
 
 for i = 1:numberOfInstructions
-    gene1 = ceil(numberOfOperators*rand);   % HR: Motor function
-    gene2 = ceil(numberOfMotors*rand);      % HR: Motor ID
-    gene3 = rand;                           % HR: Value 0-1
+    gene1 = ceil(numberOfOperators*rand); % HR: Motor function
+    gene2 = ceil(numberOfMotors*rand); % HR: Motor ID
+    gene3 = rand; % HR: Value 0-1
     
     chromosome = [chromosome, gene1, gene2, gene3];
 end

@@ -18,7 +18,10 @@ classdef MotorHSC
     end
     
     methods
-        function obj = MotorHSC()
+        function obj = MotorHSC(deviceName)
+            if nargin 
+               obj.DEVICENAME =  deviceName;
+            end
             obj.loadLibrary;
             obj.port_num = portHandler(obj.DEVICENAME);
             packetHandler();

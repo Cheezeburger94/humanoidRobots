@@ -1,8 +1,8 @@
 %% Attempts to read data from dynamixel motor
-function readData = readFromMotor(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_AX,byteData)
+function readData = readFromMotor(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_AX, byteData)
 
 % Read from dynamixel
-if byteData== 1
+if byteData == 1
     readData = read1ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_AX);
 elseif byteData == 2
     readData = read2ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_AX);

@@ -1,6 +1,6 @@
-function writeToMotor(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_AX, writeData,byte)
+function writeToMotor(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_AX, writeData, byte)
 
-if byte==2
+if byte == 2
     write2ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_AX, writeData);
 elseif byte == 1
     write1ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_AX, writeData);
