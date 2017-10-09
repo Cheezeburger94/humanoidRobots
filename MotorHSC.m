@@ -19,8 +19,8 @@ classdef MotorHSC
     
     methods
         function obj = MotorHSC(deviceName)
-            if nargin 
-               obj.DEVICENAME =  deviceName;
+            if nargin
+                obj.DEVICENAME =  deviceName;
             end
             obj.loadLibrary;
             obj.port_num = portHandler(obj.DEVICENAME);
@@ -39,11 +39,7 @@ classdef MotorHSC
         
         function moveToPosition(hsc_obj,dxl_id,goalPosition)
             % Mirrorize even ids
-            if mod(dxl_id,2)==0
-                goalPosition = 1 - goalPosition;
-            end
-            % Rescale position
-            rescaledPos = goalPosition*hsc_obj.MAX_POS;
+            rescaledPos = hsc_coordLGP_To_Motor(goalPosition,dxl_id);
             % Write to motor
             write2ByteTxRx(hsc_obj.port_num, hsc_obj.PROTOCOL_VERSION, dxl_id, hsc_obj.ADDR_AX_GOAL_POSITION, rescaledPos);
         end
@@ -100,6 +96,17 @@ classdef MotorHSC
             
             if ~libisloaded(lib_name)
                 [~, ~] = loadlibrary(lib_name, 'dynamixel_sdk.h', 'addheader', 'port_handler.h', 'addheader', 'packet_handler.h');
+            end
+        end
+        
+        function motorCoord = hsc_coordLGP_To_Motor(lgpCoord,motorID)
+            motorMin = [0,1023,135,888,162,512,205,512,381,454,205,424,205,512,420,258,313,295];
+            motorMax = [512,512,512,512,512,840,512,818,570,643,600,818,512,810,665,600,755,700];
+            motorCoord = zeros(1,length(lgpCoord));
+            
+            for i=1:length(motorCoord)
+                jointID = motorID(i);
+                motorCoord(i) = motorMin(jointID) + (motorMax(jointID)-motorMin(jointID))*lgpCoord(i);
             end
         end
         
