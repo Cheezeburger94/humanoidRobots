@@ -1,4 +1,4 @@
-classdef DoorDetector
+classdef DoorDetector < handle
     properties
         img;
         handleCoords;
@@ -19,8 +19,6 @@ classdef DoorDetector
                 preview(cam);
                 pause;
                 obj.img = snapshot(cam);
-                figure(1);
-                imshow(img);
                 clear cam;
             end            
         end
@@ -29,7 +27,7 @@ classdef DoorDetector
             %conclusion: success or failure
             
             boxMatrix = FindMarkerBoxes(obj.img); % Marker positions
-            [~,width] = size(im2double(obj.img));
+            [~,width,~] = size(im2double(obj.img));
             
             % Horizontal difference of horizontal marker centers
             horDiff = round(boxMatrix(1,1)+boxMatrix(1,3)/2)-(round(boxMatrix(2,1)+boxMatrix(2,3)/2));
@@ -41,7 +39,7 @@ classdef DoorDetector
                 lateralDistance = FindLateral(boxMatrix, width);
                 obj.handleCoords = [forwardDistance, lateralDistance];
                 
-                %obj.doorAngle = ... % Might not be used?
+                %obj.doorAngle = ...; % Might not be used?
             end
         end
         
