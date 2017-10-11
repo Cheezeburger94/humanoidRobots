@@ -17,6 +17,10 @@ while ~state == 0
             pause(1);
             state = 0;
         case 2 %search for door
+            
+        case 3 %Grab door
+            
+        case 4 %Go through door
     end
 end
 
