@@ -38,8 +38,8 @@ classdef MotorHSC
         end
         
         function moveToPosition(hsc_obj,dxl_id,goalPosition)
-            % Mirrorize even ids
-            rescaledPos = hsc_coordLGP_To_Motor(goalPosition,dxl_id);
+            % Rescale into dxl motor coordinates
+            rescaledPos = hsc_obj.hsc_coordLGP_To_Motor(goalPosition,dxl_id);
             % Write to motor
             write2ByteTxRx(hsc_obj.port_num, hsc_obj.PROTOCOL_VERSION, dxl_id, hsc_obj.ADDR_AX_GOAL_POSITION, rescaledPos);
         end
@@ -47,11 +47,11 @@ classdef MotorHSC
         function position = readPosition(hsc_obj,dxl_id)
             position = read2ByteTxRx(hsc_obj.port_num, hsc_obj.PROTOCOL_VERSION, dxl_id, hsc_obj.ADDR_AX_PRESENT_POSITION);
             % Rescale
-            position = position/(hsc_obj.MAX_POS-hsc_obj.MIN_POS);
+            %position = position/(hsc_obj.MAX_POS-hsc_obj.MIN_POS);
             % Mirrorize even ids
-            if mod(dxl_id,2)==0
-                position = 1 - position;
-            end
+            %if mod(dxl_id,2)==0
+            %    position = 1 - position;
+            %end
         end
         
         function enableTorque(hsc_obj,dxl_id)
