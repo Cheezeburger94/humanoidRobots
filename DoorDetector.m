@@ -25,9 +25,11 @@ classdef DoorDetector < handle
         
         function conclusion = locateDoor(obj)
             %conclusion: success or failure
-            
-            boxMatrix = FindMarkerBoxes(obj.img); % Marker positions
-            [~,width,~] = size(im2double(obj.img));
+            im = im2double(obj.img);
+            boxMatrix = obj.FindMarkerBoxes(); % Marker positions
+            [~,width,~] = size(im);
+%             boxMatrix = FindMarkerBoxes(obj.img); % Marker positions
+%             [~,width,~] = size(im2double(obj.img));
             
             % Horizontal difference of horizontal marker centers
             horDiff = round(boxMatrix(1,1)+boxMatrix(1,3)/2)-(round(boxMatrix(2,1)+boxMatrix(2,3)/2));
@@ -35,8 +37,8 @@ classdef DoorDetector < handle
             
             if(conclusion)
                 %Locally save all available door info
-                forwardDistance = FindDistance(boxMatrix);
-                lateralDistance = FindLateral(boxMatrix, width);
+                forwardDistance = obj.FindDistance(boxMatrix);
+                lateralDistance = obj.FindLateral(boxMatrix, width);
                 obj.handleCoords = [forwardDistance, lateralDistance];
                 
                 %obj.doorAngle = ...; % Might not be used?
@@ -57,7 +59,7 @@ classdef DoorDetector < handle
     
     methods (Access = private)
         
-        function boxMatrix = FindMarkerBoxes(img)
+        function boxMatrix = FindMarkerBoxes(obj)
             % Returns a 2,4 matrix of bounding box info.
             % 1st row green, 2nd row pink
             
@@ -73,7 +75,7 @@ classdef DoorDetector < handle
             colorInfo(2,2) = -21.5126;  % imSelB
             colorInfo(2,3) = 17.5837;   % distThresh
             
-            Im = im2double(img);
+            Im = im2double(obj.img);
             [r, c] = size(Im);
             
             %Convert to LAB color space
@@ -104,7 +106,7 @@ classdef DoorDetector < handle
             end
         end
         
-        function distanceForward = FindDistance(boxMatrix)
+        function distanceForward = FindDistance(obj, boxMatrix)
             % Input: 2x4 matrix with bounding box info as rows
             
             % Vertical difference of vertical marker centers
@@ -119,7 +121,7 @@ classdef DoorDetector < handle
             distanceForward = a*exp(b*handleSep) + c*exp(d*handleSep);
         end
         
-        function lateralDist = FindLateral(boxMatrix, imgWidth)
+        function lateralDist = FindLateral(obj, boxMatrix, imgWidth)
             handleSep = round(boxMatrix(1,2)+boxMatrix(1,4)/2)-(round(boxMatrix(2,2)+boxMatrix(2,4)/2)); % 5 cm
             lateralPixels = round(boxMatrix(1,1)+boxMatrix(1,3)/2)-round(imgWidth/2); % Green pixel distance from middle
             lateralDist = lateralPixels/handleSep*5;
