@@ -1,11 +1,22 @@
 %% Initialize V-REP
 clc, clear all;
 
+
+
 vrep=remApi('remoteApi');
+
 vrep.simxFinish(-1); % just in case, close all opened connections
+
+
 clientID=vrep.simxStart('127.0.0.1',19999,true,true,5000,5);
 
+
+k=vrep.simxStartSimulation(clientID,vrep.simx_opmode_blocking)
+
+
 if (clientID>-1)
+vrep.simxSynchronous(clientID,true);
+vrep.simxStartSimulation(clientID,vrep.simx_opmode_blocking);
 [~,motor1]=vrep.simxGetObjectHandle(clientID,'Joint1',vrep.simx_opmode_blocking);
 [~,motor2]=vrep.simxGetObjectHandle(clientID,'Joint2',vrep.simx_opmode_blocking);
 [~,motor3]=vrep.simxGetObjectHandle(clientID,'Joint3',vrep.simx_opmode_blocking);
@@ -24,11 +35,21 @@ if (clientID>-1)
 [~,motor16]=vrep.simxGetObjectHandle(clientID,'Joint16',vrep.simx_opmode_blocking);
 [~,motor17]=vrep.simxGetObjectHandle(clientID,'Joint17',vrep.simx_opmode_blocking);
 [~,motor18]=vrep.simxGetObjectHandle(clientID,'Joint18',vrep.simx_opmode_blocking);
+[~,robot]=vrep.simxGetObjectHandle(clientID,'Bioloid',vrep.simx_opmode_blocking);
+[~,shoulder]=vrep.simxGetObjectHandle(clientID,'Shoulder_R',vrep.simx_opmode_blocking);
+[~,all_Handle]=vrep.simxGetObjectHandle(clientID,'sim_handle_all',vrep.simx_opmode_blocking);
 
-
-
+[error,initPosition]=vrep.simxGetObjectPosition(clientID,robot,-1,vrep.simx_opmode_blocking);
+[error,initPosition2]=vrep.simxGetObjectPosition(clientID,shoulder,-1,vrep.simx_opmode_blocking);
+[numberreturnCodes,eulerAngles]=vrep.simxGetObjectOrientation(clientID,robot,-1,vrep.simx_opmode_blocking)
 posMotorArray = [334,687,297,723,410,610,356,666,489,532,396,628,279,743,639,385,491,532];
 posSimArray = coordMotorToSim(posMotorArray,1:18);
+pause(1);
+[~]=vrep.simxSetJointTargetPosition(clientID,motor1,posSimArray(1)+4,vrep.simx_opmode_oneshot);
+pause;
+[hej]=vrep.simxSetObjectPosition(clientID,robot,-1,initPosition,vrep.simx_opmode_blocking)
+pause(0.1)
+[hej]=vrep.simxSetObjectPosition(clientID,shoulder,-1,initPosition2,vrep.simx_opmode_blocking)
 
 
 
@@ -36,7 +57,6 @@ posSimArray = coordMotorToSim(posMotorArray,1:18);
 %pause
 %[~]=vrep.simxSetJointTargetPosition(clientID,motor2,posSimArray(2),vrep.simx_opmode_oneshot);
 %pause
-[~]=vrep.simxSetJointTargetPosition(clientID,motor3,posSimArray(3),vrep.simx_opmode_oneshot);
 %pause
 %[~]=vrep.simxSetJointTargetPosition(clientID,motor4,posSimArray(4),vrep.simx_opmode_oneshot);
 %pause
