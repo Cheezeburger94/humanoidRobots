@@ -100,8 +100,7 @@ classdef MotorHSC
         end
         
         function motorCoord = hsc_coordLGP_To_Motor(lgpCoord,motorID)
-            motorMin = [0,1023,135,888,162,512,205,512,381,454,205,424,205,512,420,258,313,295];
-            motorMax = [512,512,512,512,512,840,512,818,570,643,600,818,512,810,665,600,755,700];
+           [motorMax, motorMin] = motorPositions();
             motorCoord = zeros(1,length(lgpCoord));
             
             for i=1:length(motorCoord)

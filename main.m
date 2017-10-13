@@ -1,9 +1,9 @@
 %% Main program
 clc;
 clear all;
-
 % Initializations
 hsc_motor = MotorHSC();
+%%
 hsc_camera = DoorDetector();
 %hsc_motor.moveToPosition(1, 0)
 %hsc_motor.moveToPosition(2, (0)/1023)
@@ -36,6 +36,7 @@ end
 
 
 %% Quit program
+pause;
 hsc_motor.disableAllTorque();
 pause(1);
 hsc_motor.closeConnection();
